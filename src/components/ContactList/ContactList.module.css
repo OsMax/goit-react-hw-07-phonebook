@@ -32,12 +32,9 @@
 .contactInfo {
   width: 80%;
   display: flex;
+  justify-content: space-between;
   gap: 20px;
   font-size: 16px;
-}
-
-.contactName {
-  width: 140px;
 }
 
 .deletButton {

@@ -1,53 +1,44 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts } from 'redux/selectors';
 import css from './ContactForm.module.css';
-import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/phoneSlice';
+import { addPhone } from 'redux/operations';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const contacts = useSelector(selectContacts);
 
-  const stateChange = e => {
-    const { name, value } = e.currentTarget;
-    switch (name) {
-      case 'name': {
-        setName(value);
-        break;
-      }
-      case 'number': {
-        setNumber(value);
-        break;
-      }
-      default:
-        break;
-    }
-  };
-
-  const getSubmitData = e => {
+  const submitData = e => {
     e.preventDefault();
-    if (!name.trim() || !number.trim()) {
+
+    const form = e.target;
+    const nameAdd = e.target.elements.name.value;
+    const numberAdd = e.target.elements.number.value;
+
+    if (!nameAdd.trim() || !numberAdd.trim()) {
       window.alert('Please complete all fields');
       return;
     }
-    dispatch(addContact({ ...{ id: nanoid() }, ...{ name, number } }));
-    // onSubmitData({ ...{ id: nanoid() }, ...{ name, number } });
-    setName('');
-    setNumber('');
-    e.currentTarget.reset();
+    if (contacts.some(({ name }) => name === nameAdd)) {
+      return alert(`${nameAdd} is already in contacts`);
+    }
+
+    if (contacts.some(({ phone }) => phone === numberAdd)) {
+      return alert(`${numberAdd} is already in contacts`);
+    }
+    dispatch(addPhone({ name: nameAdd, phone: numberAdd }));
+    form.reset();
+    form.reset();
   };
 
   return (
-    <form className={css.form} onSubmit={getSubmitData}>
+    <form className={css.form} onSubmit={submitData}>
       <label className={css.label}>
         <span className={css.labelText}>Name</span>
         <input
           className={css.input}
           name="name"
           type="text"
-          value={name}
-          onChange={stateChange}
+          value={contacts.name}
           pattern="[A-Za-zА-Яа-яЁё]{2,}[ ][A-Za-zА-Яа-яЁё]{2,}"
           placeholder="Name Surname (min 2 symbols for each)"
         />
@@ -58,8 +49,7 @@ const ContactForm = () => {
           className={css.input}
           name="number"
           type="text"
-          value={number}
-          onChange={stateChange}
+          value={contacts.number}
           pattern="\d{3}[\-]\d{2}[\-]\d{2}"
           placeholder="111-11-11"
         />

@@ -1,6 +1,6 @@
 import React from 'react';
 import css from './Filter.module.css';
-import { setFilter } from 'redux/phoneSlice';
+import { setFilter } from 'redux/phonesSlice';
 import { useDispatch } from 'react-redux';
 
 const Filter = () => {
@@ -8,6 +8,7 @@ const Filter = () => {
   const setNewFilter = e => {
     dispatch(setFilter(e.target.value));
   };
+
   return (
     <div className={css.filterContainer}>
       <input className={css.inputFind} type="text" onInput={setNewFilter} />
