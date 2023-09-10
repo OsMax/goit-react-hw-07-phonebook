@@ -50,8 +50,8 @@ const ContactForm = () => {
           name="number"
           type="text"
           value={contacts.number}
-          pattern="\d{3}[\-]\d{2}[\-]\d{2}"
-          placeholder="111-11-11"
+          pattern="\d{3}[\-]\d{3}[\-]\d{4}"
+          placeholder="111-111-1111"
         />
       </label>
       <button className={css.submitBtn} type="submit">
