@@ -18,12 +18,6 @@ const phonesSlice = createSlice({
       isLoading: false,
       error: null,
     },
-    filter: '',
-  },
-  reducers: {
-    setFilter(state, action) {
-      state.filter = action.payload;
-    },
   },
   extraReducers: {
     [fetchPhones.pending]: handlePending,
@@ -54,4 +48,3 @@ const phonesSlice = createSlice({
 });
 
 export const phonesReducer = phonesSlice.reducer;
-export const { setFilter } = phonesSlice.actions;
